@@ -1,173 +1,299 @@
 # BlueWatch Lite
 
-BlueWatch Lite is a local-only defensive cybersecurity training project. It ingests fictional sample logs, parses security events, runs safe rule-based detections, and shows alerts in a React dashboard.
+```txt
+  /./.// /./.// /./.// /./.// /././/
 
-## Safety Scope
+   ____  _            __        __    _       _
+  | __ )| |_   _  ___ \ \      / /_ _| |_ ___| |__
+  |  _ \| | | | |/ _ \ \ \ /\ / / _` | __/ __| '_ \
+  | |_) | | |_| |  __/  \ V  V / (_| | || (__| | | |
+  |____/|_|\__,_|\___|   \_/\_/ \__,_|\__\___|_| |_|
 
-This project is intentionally defensive and educational.
+  [//] BLUEWATCH LITE
+  [//] LOCAL SIEM DASHBOARD
+  [//] DEFENSIVE SECURITY PROJECT
+```
 
-- It does not scan networks.
-- It does not exploit systems.
-- It does not collect credentials.
-- It uses only local sample logs and documentation-reserved IP ranges.
+BlueWatch Lite is a small local SIEM-style dashboard made for defensive cybersecurity practice.
+
+It loads sample security logs, parses them, runs detection rules, and displays suspicious activity as alerts. The main goal of this project is to understand how basic blue-team tools work behind the scenes.
+
+This project is fully local. It does not scan, attack, exploit, or connect to real targets.
+
+---
+
+## What this project does
+
+BlueWatch Lite follows a simple security monitoring flow:
+
+```txt
+security logs -> parser -> database -> detection rules -> alerts -> dashboard
+```
+
+It helps practice:
+
+* reading security logs
+* parsing SSH and web events
+* writing simple detection rules
+* reviewing alerts
+* filtering events
+* generating a basic incident report
+
+---
+
+## Project Scheme
+
+```txt
+                ┌────────────────────┐
+                │    Sample Logs      │
+                │ SSH / Web / JSON    │
+                └──────────┬─────────┘
+                           │
+                           ▼
+                ┌────────────────────┐
+                │     Log Parser      │
+                │ normalizes events   │
+                └──────────┬─────────┘
+                           │
+                           ▼
+                ┌────────────────────┐
+                │    SQLite DB        │
+                │ stores events/rules │
+                └──────────┬─────────┘
+                           │
+                           ▼
+                ┌────────────────────┐
+                │ Detection Engine    │
+                │ rule-based alerts   │
+                └──────────┬─────────┘
+                           │
+           ┌───────────────┼────────────────┐
+           ▼               ▼                ▼
+     ┌───────────┐   ┌───────────┐   ┌───────────┐
+     │ Dashboard │   │  Alerts   │   │  Report   │
+     └───────────┘   └───────────┘   └───────────┘
+```
+
+---
 
 ## Features
 
-- FastAPI backend with SQLite storage
-- React + Vite + TypeScript frontend
-- Tailwind CSS UI
-- Demo log loader
-- Linux SSH auth.log parser
-- Nginx access log parser
-- Generic JSON security event parser
-- Rule-based detections:
-  - SSH brute force
-  - Successful login after failures
-  - HTTP 401/403/404 burst
-  - Sensitive path probing
-  - Unusual or scanner-like User Agent
-  - Impossible travel simulation using local mock IP-to-country mapping
-- Dashboard summary cards
-- Alert detail view with matched evidence
-- Rule enable/disable and threshold editing
-- Event search
-- Markdown incident report generation and download
+* Load demo security logs
+* Parse SSH auth logs, web access logs, and JSON events
+* Detect suspicious activity with built-in rules
+* View alert details
+* Search and filter events
+* Enable or disable detection rules
+* Generate a Markdown incident report
+* Run everything locally
 
-## Project Structure
+---
 
-```text
-BlueWatch_Lite/
-  backend/
-    app/
-      crud.py
-      database.py
-      detector.py
-      main.py
-      models.py
-      parser.py
-      schemas.py
-    tests/
-      test_detector.py
-      test_parser.py
-    requirements.txt
-    run.py
-  frontend/
-    src/
-      App.tsx
-      main.tsx
-      styles.css
-    package.json
-    vite.config.ts
-    tailwind.config.js
-  sample_logs/
-    auth_ssh.log
-    generic_security.json
-    nginx_access.log
-  docs/
-    MANUAL_QA.md
-    WALKTHROUGH.md
-```
+## Detection Rules
 
-## Backend Setup
+BlueWatch Lite includes simple defensive detection rules:
 
-From the project root:
+* SSH brute force attempts
+* Successful login after multiple failed attempts
+* HTTP 401 / 403 / 404 bursts from one IP
+* Path probing like `/admin`, `/.env`, `/wp-login.php`
+* Empty or scanner-like user agents
+* Mock impossible travel detection
+
+---
+
+## Tech Stack
+
+Backend:
+
+* Python
+* FastAPI
+* SQLite
+* Pytest
+
+Frontend:
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+
+---
+
+## How to Run
+
+Clone the repository:
 
 ```bash
-cd backend
-python -m venv .venv
+git clone https://github.com/BeBecpp/Blue_Watch_lite.git
+cd Blue_Watch_lite
 ```
 
-Activate the environment.
+---
 
-Windows PowerShell:
+### 1. Run the Backend
+
+Open a terminal and run:
 
 ```powershell
+cd backend
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-```
-
-macOS/Linux:
-
-```bash
-source .venv/bin/activate
-```
-
-Install dependencies:
-
-```bash
 pip install -r requirements.txt
+python run.py
 ```
 
-Run tests:
+Backend runs on:
 
-```bash
-cd ..
-PYTHONPATH=backend pytest -q backend/tests
+```txt
+http://127.0.0.1:8000
 ```
 
-On Windows PowerShell:
+API documentation:
+
+```txt
+http://127.0.0.1:8000/docs
+```
+
+Note: opening `http://127.0.0.1:8000/` may show `404 Not Found`. That is normal. Use `/docs` for the API page.
+
+---
+
+### 2. Run the Frontend
+
+Open another terminal and run:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs on:
+
+```txt
+http://127.0.0.1:5173
+```
+
+Open that URL in your browser.
+
+---
+
+## How to Use
+
+After opening the frontend:
+
+1. Click **Load Demo Logs**
+2. Open the **Dashboard**
+3. Check alert counts and event statistics
+4. Go to **Alerts**
+5. Open an alert and review the details
+6. Go to **Rules**
+7. Try disabling and enabling a rule
+8. Go to **Events**
+9. Search logs by IP, username, or message
+10. Go to **Report**
+11. Generate a Markdown incident report
+
+---
+
+## Run Tests
+
+From the project root:
 
 ```powershell
 $env:PYTHONPATH="backend"
 pytest -q backend/tests
 ```
 
-Start the API:
+Expected result:
 
-```bash
-cd backend
-python run.py
+```txt
+10 passed
 ```
 
-API base URL:
+---
 
-```text
-http://127.0.0.1:8000/api
-```
+## Troubleshooting
 
-Interactive API docs:
+### `vite is not recognized`
 
-```text
-http://127.0.0.1:8000/docs
-```
+Frontend dependencies were not installed correctly.
 
-## Frontend Setup
+Run:
 
-Open a second terminal from the project root:
-
-```bash
+```powershell
 cd frontend
+Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue
+Remove-Item -Force package-lock.json -ErrorAction SilentlyContinue
+npm config set registry https://registry.npmjs.org/
 npm install
 npm run dev
 ```
 
-Frontend URL:
+### Frontend shows zero alerts
 
-```text
-http://127.0.0.1:5173
+Click:
+
+```txt
+Load Demo Logs
 ```
 
-Build check:
+The demo data must be loaded first.
 
-```bash
-npm run build
+### Backend shows `404 Not Found`
+
+This is normal if you open:
+
+```txt
+http://127.0.0.1:8000/
 ```
 
-## Recommended Demo Flow
+Use:
 
-1. Start backend with `python backend/run.py`.
-2. Start frontend with `npm run dev` inside `frontend`.
-3. Open `http://127.0.0.1:5173`.
-4. Click **Load Demo Logs**.
-5. Review dashboard cards and severity breakdown.
-6. Open the **Alerts** page.
-7. Open alert details and inspect matched events.
-8. Open **Rules**, disable a rule, then enable it again.
-9. Open **Events** and search by source IP or message text.
-10. Open **Report**, generate a Markdown report, then download it.
+```txt
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Safety
+
+BlueWatch Lite is a defensive learning project.
+
+It does not:
+
+* scan public IP addresses
+* exploit systems
+* steal credentials
+* run malware
+* attack real networks
+
+All demo activity is based on local sample logs.
+
+---
+
+## GitHub Topics
+
+Recommended repository topics:
+
+```txt
+cybersecurity
+blue-team
+siem
+defensive-security
+log-analysis
+incident-response
+security-dashboard
+fastapi
+react
+typescript
+sqlite
+python
+```
+
+---
 
 ## Notes
 
-- The SQLite database file `bluewatch.db` is created at runtime.
-- Demo loading clears previous events and alerts to avoid duplicates.
-- Rule settings are stored locally in SQLite.
-- All sample IPs are from RFC 5737 documentation ranges: `192.0.2.0/24`, `198.51.100.0/24`, and `203.0.113.0/24`.
+This project is not meant to be a production SIEM. It is a small learning project for understanding the basic flow of security monitoring tools.
