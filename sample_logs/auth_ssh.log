@@ -1,0 +1,11 @@
+Jun  5 22:30:01 server sshd[1234]: Failed password for invalid user admin from 192.0.2.10 port 59123 ssh2
+Jun  5 22:30:05 server sshd[1234]: Failed password for invalid user admin from 192.0.2.10 port 59124 ssh2
+Jun  5 22:30:10 server sshd[1234]: Failed password for invalid user admin from 192.0.2.10 port 59125 ssh2
+Jun  5 22:30:15 server sshd[1234]: Failed password for invalid user admin from 192.0.2.10 port 59126 ssh2
+Jun  5 22:30:20 server sshd[1234]: Failed password for invalid user admin from 192.0.2.10 port 59127 ssh2
+Jun  5 22:31:00 server sshd[1235]: Failed password for root from 198.51.100.20 port 59200 ssh2
+Jun  5 22:31:05 server sshd[1235]: Failed password for root from 198.51.100.20 port 59201 ssh2
+Jun  5 22:31:10 server sshd[1235]: Failed password for root from 198.51.100.20 port 59202 ssh2
+Jun  5 22:31:15 server sshd[1235]: Accepted password for root from 198.51.100.20 port 59203 ssh2
+Jun  5 22:32:00 server sshd[1236]: Accepted password for user_test from 192.0.2.1 port 59300 ssh2
+Jun  5 22:35:00 server sshd[1237]: Accepted password for user_test from 198.51.100.1 port 59301 ssh2
